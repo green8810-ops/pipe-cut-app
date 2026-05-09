@@ -1,1 +1,378 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GENBA PRO</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+      background: #f3f5f7;
+      color: #222;
+    }
 
+    header {
+      background: #1f2937;
+      color: white;
+      padding: 18px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: 1px;
+    }
+
+    header p {
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: #d1d5db;
+    }
+
+    .container {
+      padding: 18px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .status-card {
+      background: white;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .status-card h2 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .plan {
+      display: inline-block;
+      background: #2563eb;
+      color: white;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .menu-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px 14px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .menu-card:active {
+      transform: scale(0.97);
+    }
+
+    .icon {
+      font-size: 34px;
+      margin-bottom: 8px;
+    }
+
+    .menu-card h3 {
+      margin: 6px 0;
+      font-size: 16px;
+    }
+
+    .menu-card p {
+      margin: 0;
+      font-size: 12px;
+      color: #666;
+      line-height: 1.4;
+    }
+
+    .section {
+      display: none;
+      background: white;
+      border-radius: 14px;
+      padding: 16px;
+      margin-top: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0 14px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #2563eb;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .back {
+      background: #6b7280;
+    }
+
+    .danger {
+      background: #dc2626;
+    }
+
+    .result {
+      background: #f9fafb;
+      padding: 12px;
+      border-radius: 10px;
+      margin-top: 12px;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+
+    footer {
+      text-align: center;
+      color: #888;
+      font-size: 12px;
+      margin: 30px 0 15px;
+    }
+
+    @media (min-width: 700px) {
+      .grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>GENBA PRO</h1>
+  <p>製造・溶接・加工現場向け 管理アプリ</p>
+</header>
+
+<div class="container">
+
+  <div class="status-card">
+    <h2>株式会社サンプル工場</h2>
+    <p>ログイン中：demo@example.com</p>
+    <span class="plan">PROプラン</span>
+  </div>
+
+  <div id="home" class="grid">
+    <div class="menu-card" onclick="openSection('estimate')">
+      <div class="icon">🧾</div>
+      <h3>見積作成</h3>
+      <p>材料・工賃・数量から簡単見積</p>
+    </div>
+
+    <div class="menu-card" onclick="openSection('pipe')">
+      <div class="icon">📏</div>
+      <h3>パイプ計算</h3>
+      <p>定尺材から必要本数を計算</p>
+    </div>
+
+    <div class="menu-card" onclick="openSection('project')">
+      <div class="icon">📁</div>
+      <h3>案件管理</h3>
+      <p>現場・顧客・納期を管理</p>
+    </div>
+
+    <div class="menu-card" onclick="openSection('photo')">
+      <div class="icon">📷</div>
+      <h3>写真保存</h3>
+      <p>加工写真・完成写真を保存</p>
+    </div>
+
+    <div class="menu-card" onclick="openSection('stock')">
+      <div class="icon">🏭</div>
+      <h3>在庫管理</h3>
+      <p>材料在庫・残数を記録</p>
+    </div>
+
+    <div class="menu-card" onclick="openSection('settings')">
+      <div class="icon">⚙️</div>
+      <h3>設定</h3>
+      <p>会社情報・プラン・出力設定</p>
+    </div>
+  </div>
+
+  <div id="estimate" class="section">
+    <h2>🧾 見積作成</h2>
+    <input id="customer" placeholder="顧客名">
+    <input id="item" placeholder="品名・作業内容">
+    <input id="materialCost" type="number" placeholder="材料費">
+    <input id="laborCost" type="number" placeholder="工賃">
+    <input id="qty" type="number" placeholder="数量">
+    <button onclick="makeEstimate()">見積を作成</button>
+    <div id="estimateResult" class="result"></div>
+    <button class="back" onclick="goHome()">戻る</button>
+  </div>
+
+  <div id="pipe" class="section">
+    <h2>📏 パイプ定尺計算</h2>
+    <input id="stockLength" type="number" placeholder="定尺長さ mm 例：5500">
+    <textarea id="cutList" rows="6" placeholder="カット寸法を1行ずつ入力&#10;例：&#10;1200&#10;850&#10;600"></textarea>
+    <button onclick="calcPipe()">必要本数を計算</button>
+    <div id="pipeResult" class="result"></div>
+    <button class="back" onclick="goHome()">戻る</button>
+  </div>
+
+  <div id="project" class="section">
+    <h2>📁 案件管理</h2>
+    <input id="projectName" placeholder="案件名">
+    <input id="deliveryDate" type="date">
+    <textarea id="projectMemo" rows="4" placeholder="メモ・注意事項"></textarea>
+    <button onclick="saveProject()">案件を保存</button>
+    <div id="projectResult" class="result"></div>
+    <button class="back" onclick="goHome()">戻る</button>
+  </div>
+
+  <div id="photo" class="section">
+    <h2>📷 写真保存</h2>
+    <input type="file" accept="image/*" capture="environment" onchange="previewPhoto(event)">
+    <div id="photoPreview" class="result">写真を選択するとここに表示されます</div>
+    <button class="back" onclick="goHome()">戻る</button>
+  </div>
+
+  <div id="stock" class="section">
+    <h2>🏭 在庫管理</h2>
+    <input id="stockName" placeholder="材料名 例：角パイプ 50×50">
+    <input id="stockQty" type="number" placeholder="在庫数">
+    <button onclick="saveStock()">在庫を登録</button>
+    <div id="stockResult" class="result"></div>
+    <button class="back" onclick="goHome()">戻る</button>
+  </div>
+
+  <div id="settings" class="section">
+    <h2>⚙️ 設定</h2>
+    <input placeholder="会社名">
+    <input placeholder="メールアドレス">
+    <select>
+      <option>無料プラン</option>
+      <option>PROプラン</option>
+      <option>会社プラン</option>
+    </select>
+    <button>設定を保存</button>
+    <button class="danger">ログアウト</button>
+    <button class="back" onclick="goHome()">戻る</button>
+  </div>
+
+</div>
+
+<footer>
+  GENBA PRO Ver.1.0 / 現場向け業務アプリ
+</footer>
+
+<script>
+  function openSection(id) {
+    document.getElementById("home").style.display = "none";
+    document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+  }
+
+  function goHome() {
+    document.getElementById("home").style.display = "grid";
+    document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  }
+
+  function makeEstimate() {
+    const customer = document.getElementById("customer").value;
+    const item = document.getElementById("item").value;
+    const material = Number(document.getElementById("materialCost").value || 0);
+    const labor = Number(document.getElementById("laborCost").value || 0);
+    const qty = Number(document.getElementById("qty").value || 1);
+    const total = (material + labor) * qty;
+
+    document.getElementById("estimateResult").innerText =
+      `顧客名：${customer}\n内容：${item}\n材料費：${material.toLocaleString()}円\n工賃：${labor.toLocaleString()}円\n数量：${qty}\n\n合計：${total.toLocaleString()}円`;
+  }
+
+  function calcPipe() {
+    const stockLength = Number(document.getElementById("stockLength").value);
+    const cuts = document.getElementById("cutList").value
+      .split("\n")
+      .map(v => Number(v.trim()))
+      .filter(v => v > 0);
+
+    if (!stockLength || cuts.length === 0) {
+      document.getElementById("pipeResult").innerText = "定尺長さとカット寸法を入力してください。";
+      return;
+    }
+
+    let pipes = [];
+    cuts.sort((a, b) => b - a);
+
+    cuts.forEach(cut => {
+      let placed = false;
+      for (let pipe of pipes) {
+        const used = pipe.reduce((a, b) => a + b, 0);
+        if (used + cut <= stockLength) {
+          pipe.push(cut);
+          placed = true;
+          break;
+        }
+      }
+      if (!placed) pipes.push([cut]);
+    });
+
+    let result = `必要本数：${pipes.length}本\n\n`;
+    pipes.forEach((pipe, i) => {
+      const used = pipe.reduce((a, b) => a + b, 0);
+      result += `${i + 1}本目：${pipe.join(" + ")} = ${used}mm / 残り ${stockLength - used}mm\n`;
+    });
+
+    document.getElementById("pipeResult").innerText = result;
+  }
+
+  function saveProject() {
+    const name = document.getElementById("projectName").value;
+    const date = document.getElementById("deliveryDate").value;
+    const memo = document.getElementById("projectMemo").value;
+
+    document.getElementById("projectResult").innerText =
+      `案件を保存しました。\n\n案件名：${name}\n納期：${date}\nメモ：${memo}`;
+  }
+
+  function previewPhoto(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById("photoPreview").innerHTML =
+        `<img src="${e.target.result}" style="max-width:100%; border-radius:12px;">`;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function saveStock() {
+    const name = document.getElementById("stockName").value;
+    const qty = document.getElementById("stockQty").value;
+
+    document.getElementById("stockResult").innerText =
+      `在庫を登録しました。\n\n材料名：${name}\n在庫数：${qty}`;
+  }
+</script>
+
+</body>
+</html>
